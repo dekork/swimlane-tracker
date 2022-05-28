@@ -30,10 +30,14 @@ jobs:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
+      # build backend
+      - run:
+          name: server/npm build
+          command: cd ~/project/server; npm build
       # test backend
       - run:
           name: server/npm test
-          command: server/npm test
+          command: cd ~/project/server; npm test
 
 # build-client:
 
