@@ -1,0 +1,59 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  build-server:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/node:lts #using 16.15
+      - image: cimg/mysql:8.0
+        environment:
+          MYSQL_DATABASE: swimlane
+          MYSQL_USER: swimlane
+          MYSQL_PASSWORD: passw0rd
+    
+    steps:
+      - checkout
+      - run:
+          # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          # wait taken from: https://circleci.com/docs/2.0/postgres-config/#example-mysql-project
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      
+      # init sql database
+      - run:
+          name: init sql database
+          command: |
+            sudo apt-get update
+            sudo apt-get install mysql-client
+            mysql -h 127.0.0.1 -u swimlane -ppassw0rd swimlane < server/config/init.sql
+
+      # install node_modules
+      - run:
+          name: server/npm install
+          command: cd ~/project/server; npm install
+      # test backend
+      - run:
+          name: server/npm test
+          command: cd ~/project/server; npm test
+
+# build-client:
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  build-workflow:
+    jobs:
+      - build-server
+      # build-client
