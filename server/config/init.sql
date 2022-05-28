@@ -6,4 +6,4 @@ vessel_name VARCHAR(100) NOT NULL,
 operator_name VARCHAR(100),
 swimlane TINYINT);
 
-INSERT INTO boats ('test boat', 'sailor', 0);
+INSERT INTO boats (vessel_name, operator_name, swimlane) VALUES ('test boat', 'sailor', 0);
