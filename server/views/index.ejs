@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+  Here are the boats: <% for (var i = 0; i < boats.length; i++) {%><br><%= boats[i].vessel_name %><% } %>
+
+
+  <hr>
+  add new boat
+    <form action="/api/addboat" method="POST">
+  <label>boat name: </label><input name="boatname"/>
+    <label>operator name: </label><input name="operatorname"/>
+  <button type="submit"></button>
+    </form>
+  </body>
+</html>
