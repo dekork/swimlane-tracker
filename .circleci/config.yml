@@ -5,7 +5,7 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build:
+  build-server:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -15,9 +15,7 @@ jobs:
           MYSQL_DATABASE: swimlane
           MYSQL_USER: swimlane
           MYSQL_PASSWORD: passw0rd
-
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    
     steps:
       - checkout
       - run:
@@ -32,14 +30,17 @@ jobs:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
-      
+      # test backend
       - run:
-          name: npm test
-          command: npm test
+          name: server/npm test
+          command: server/npm test
+
+# build-client:
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-workflow:
     jobs:
-      - build
+      - build-server
+      # build-client
