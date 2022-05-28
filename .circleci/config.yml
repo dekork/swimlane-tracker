@@ -11,11 +11,11 @@ jobs:
     docker:
       - image: cimg/node:lts #using 16.15
       - image: cimg/mysql:8.0
-          environment:
-            MYSQL_DATABASE: swimlane
-            MYSQL_USER: swimlane
-            MYSQL_PASSWORD: passw0rd
-            
+        environment:
+          MYSQL_DATABASE: swimlane
+          MYSQL_USER: swimlane
+          MYSQL_PASSWORD: passw0rd
+
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
