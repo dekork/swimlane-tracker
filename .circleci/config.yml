@@ -35,7 +35,7 @@ jobs:
       - run:
           name: init sql database
           command: |
-            sudo apt-get install mysql-client
+            sudo apt-get install default-mysql-client
             mysql -h 127.0.0.1 -u swimlane -ppassw0rd swimlane < server/config/init.sql
 
       # install node_modules
