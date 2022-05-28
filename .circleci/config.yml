@@ -34,7 +34,7 @@ jobs:
       # init sql database
       - run:
           name: init sql database
-          command: mysql -h 127.0.0.1 -u swimlane -ppassw0rd swimlane < backend/config/init.sql 
+          command: mysql -h 127.0.0.1 -u swimlane -ppassw0rd swimlane < server/config/init.sql 
       # install node_modules
       - run:
           name: server/npm install
