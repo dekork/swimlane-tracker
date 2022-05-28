@@ -30,6 +30,10 @@ jobs:
               sleep 1
             done
             echo Failed waiting for MySQL && exit 1
+      # install node_modules
+      - run:
+          name: server/npm install
+          command: cd ~/project/server; npm install
       # test backend
       - run:
           name: server/npm test
