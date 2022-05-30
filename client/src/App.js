@@ -133,6 +133,12 @@ function App() {
             </header>
             <Container>
                 <Row className="justify-content-md-center">
+                    <Button variant="secondary" onClick={() => openModal(undefined)}>
+                        Add boat
+                    </Button>
+
+                </Row>
+                <Row className="justify-content-md-center">
                     <Col>
                         <Table striped bordered hover>
                             <thead>
@@ -198,7 +204,7 @@ function App() {
 
             <Modal show={showModal} onHide={hideModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Boat</Modal.Title>
+                    <Modal.Title>{selectedData === undefined ? 'Add Boat' : 'Edit Boat'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -233,7 +239,7 @@ function App() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => {deleteData(); hideModal();}}>
+                    <Button hidden={selectedData === undefined} variant="secondary" onClick={() => {deleteData(); hideModal();}}>
                         Delete
                         </Button>
                     <Button variant="secondary" onClick={() => {editData(); hideModal(); }}>
