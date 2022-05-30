@@ -23,5 +23,6 @@ describe("POST /api/addboat", () => {
     });
 });
 
+//TODO: add test for /editboat/:id
 
-
+//TODO: add test for /deleteboat/:id
