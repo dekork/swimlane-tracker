@@ -47,6 +47,15 @@ jobs:
       - run:
           name: server/npm test
           command: cd ~/project/server; npm test
+          
+      - run:
+          name: build docker image using docker-compose
+          command: |
+            docker login --user $DOCKER_USER --password DOCKER_PASS
+            docker-compose build dekork/swimlane-tracker
+            docker-compose push
+            docker logout
+
 
 # build-client:
 
