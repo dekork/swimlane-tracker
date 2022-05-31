@@ -109,7 +109,11 @@ workflows:
           repo-scan-on-push: true
           skip-when-tags-exist: false
 
-      #
+      - ssh-pull-ecr-images:
+          requires:
+            - build_push_server # only run this job once server push to ecr has completed
+            - build_push_client
+            - build_push_mysql
 
       #- aws-ecs/deploy-service-update:
           #requires:
