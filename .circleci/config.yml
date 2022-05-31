@@ -52,6 +52,17 @@ jobs:
           name: server/npm test
           command: cd ~/project/server; npm test
 
+  ssh-pull-ecr-images:
+    docker:
+      - image: cimg/base:latest
+    
+    steps:
+      - run: 
+          name: ssh into ec2, and pull images
+          command: |
+            ssh ec2-user@ec2-15-222-6-37.ca-central-1.compute.amazonaws.com 'sudo apt update'
+
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -98,13 +109,15 @@ workflows:
           repo-scan-on-push: true
           skip-when-tags-exist: false
 
-      - aws-ecs/deploy-service-update:
-          requires:
-            - build_push_server # only run this job once server push to ecr has completed
-            - build_push_client
-            - build_push_mysql
-          family: "swimlane-tracker-fargate-family"
-          cluster-name: "swimlane-tracker-fargate"
-          service-name: "swimlane-tracker-fargate-service"
+      #
+
+      #- aws-ecs/deploy-service-update:
+          #requires:
+            #- build_push_server # only run this job once server push to ecr has completed
+            #- build_push_client
+            #- build_push_mysql
+          #family: "swimlane-tracker-fargate-family"
+          #cluster-name: "swimlane-tracker-fargate"
+          #service-name: "swimlane-tracker-fargate-service"
           #container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
       
