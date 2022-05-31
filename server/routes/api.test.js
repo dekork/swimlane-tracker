@@ -14,7 +14,7 @@ describe("POST /api/addboat", () => {
     test("Add a boat successfully then delete manually in SQL", async () => {
         return request(app)
             .post("/api/addboat")
-            .send({boatname: "Test2boat352624", operatorname: "Oper@tor3250823"})
+            .send({vessel_name: "Test2boat352624", operator_name: "Oper@tor3250823"})
             .set('Accept', 'application/json')
             .expect(200)
             .then((res) => {
