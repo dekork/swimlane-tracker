@@ -59,13 +59,25 @@ workflows:
     jobs:
       - build-and-test-server-and-client
       - aws-ecr/build-and-push-image:
-          name: build_push_server
+          name: build_push_mysql
           requires: 
             - build-and-test-server-and-client
-          repo: swimlane-tracker-server
+          repo: swimlane-tracker-mysql
+          create-repo: true
+          dockerfile: mysqlDockerFile
+          public-registry: false
+          push-image: true
+          region: $AWS_REGION
+          repo-scan-on-push: true
+          skip-when-tags-exist: false
+      - aws-ecr/build-and-push-image:
+          name: build_push_client
+          requires: 
+            - build-and-test-server-and-client
+          repo: swimlane-tracker-client
           create-repo: true
           dockerfile: Dockerfile
-          path: ./server/
+          path: ./client/
           public-registry: false
           push-image: true
           region: $AWS_REGION
@@ -89,8 +101,9 @@ workflows:
           requires:
             - build_push_server # only run this job once server push to ecr has completed
             - build_push_client
-          family: "swimlane-tracker-family"
-          cluster-name: "swimlane-tracker"
-          service-name: "swimlane-tracker-service"
+            - build_push_mysql
+          family: "swimlane-tracker-fargate-family"
+          cluster-name: "swimlane-tracker-fargate"
+          service-name: "swimlane-tracker-fargate-service"
           #container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
       
