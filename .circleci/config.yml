@@ -47,6 +47,20 @@ jobs:
       - run:
           name: server/npm test
           command: cd ~/project/server; npm test
+
+      - setup_remote_docker:
+          version: 17.09.0-ce
+          docker_layer_caching: true
+
+      - run:
+          name: build docker
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker-compose build -t dekork/swimlane-tracker:$TAG
+            docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+            docker-compose push dekork/swimlane-tracker:$TAG
+            docker logout
+
           
   build-docker-image-and-push:
     docker: 
