@@ -89,7 +89,7 @@ workflows:
           requires:
             - build_push_server # only run this job once server push to ecr has completed
             - build_push_client
-          family: "swimlane-tracker-service"
+          family: "swimlane-tracker-family"
           cluster-name: "swimlane-tracker"
           #container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
       
