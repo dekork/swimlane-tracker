@@ -90,10 +90,10 @@ workflows:
             - build_push_server # only run this job once server push to ecr has completed
           family: "swimlane-tracker-server-service"
           cluster-name: "swimlane-tracker"
-          container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
+          #container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
       - aws-ecs/deploy-service-update:
           requires:
             - build_push_client # only run this job once client push to ecr has completed
           family: "swimlane-tracker-client-service"
           cluster-name: "swimlane-tracker"
-          container-image-name-updates: "container=swimlane-tracker-client-service,tag=latest"
+          #container-image-name-updates: "container=swimlane-tracker-client-service,tag=latest"
