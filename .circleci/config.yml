@@ -8,7 +8,7 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build-server:
+  build-and-test-server-and-client:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -51,37 +51,34 @@ jobs:
           name: server/npm test
           command: cd ~/project/server; npm test
 
-      - setup_remote_docker:
-          version: 20.10.12
-          docker_layer_caching: true
-
-      - run:
-          name: build docker
-          command: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker-compose config
-            docker-compose build
-            docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-            docker-compose push dekork/swimlane-tracker
-            docker logout
-
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-workflow:
     jobs:
-      - build-server
+      - build-and-test-server-and-client
       - aws-ecr/build-and-push-image:
+          requires: 
+            - build-and-test-server-and-client
+          repo: swimlane-tracker-server
           create-repo: true
           dockerfile: Dockerfile
           path: ./server/
-          new-profile-name: newProfileName
-          no-output-timeout: 20m
-          platform: linux/amd64
           public-registry: false
           push-image: true
           region: $AWS_REGION
-          repo: swimlane-tracker
+          repo-scan-on-push: true
+          skip-when-tags-exist: false
+      - aws-ecr/build-and-push-image:
+          requires: 
+            - build-and-test-server-and-client
+          repo: swimlane-tracker-client
+          create-repo: true
+          dockerfile: Dockerfile
+          path: ./client/
+          public-registry: false
+          push-image: true
+          region: $AWS_REGION
           repo-scan-on-push: true
           skip-when-tags-exist: false
       
