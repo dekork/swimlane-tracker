@@ -62,30 +62,26 @@ jobs:
             docker-compose push dekork/swimlane-tracker
             docker logout
 
-          
-  build-docker-image-and-push:
-    docker: 
-      - image: cimg/base:stable
-
-    steps:
-      - checkout
-      - run:
-          name: build docker image using docker-compose
-          command: |
-            docker-compose up -d
-            docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-            docker-compose build
-            docker-compose push
-            docker logout
-
-
-
-
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-workflow:
     jobs:
       - build-server
-      - build-docker-image-and-push
+      - aws-ecr/build-and-push-image:
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          create-repo: true
+          dockerfile: Dockerfile
+          path: ./server/
+          new-profile-name: newProfileName
+          no-output-timeout: 20m
+          platform: linux/amd64
+          public-registry: false
+          push-image: true
+          region: $AWS_REGION
+          registry-id: $AWS_ECR_REGISTRY_ID
+          repo: swimlane-tracker
+          repo-scan-on-push: true
+          skip-when-tags-exist: false
       
