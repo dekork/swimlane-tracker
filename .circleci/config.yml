@@ -91,5 +91,6 @@ workflows:
             - build_push_client
           family: "swimlane-tracker-family"
           cluster-name: "swimlane-tracker"
+          service-name: "swimlane-service"
           #container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
       
