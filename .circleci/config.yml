@@ -51,6 +51,7 @@ jobs:
       - run:
           name: build docker image using docker-compose
           command: |
+            systemctl start docker
             docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
             docker-compose build
             docker-compose push
