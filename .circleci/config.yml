@@ -71,13 +71,13 @@ workflows:
           repo-scan-on-push: true
           skip-when-tags-exist: false
       - aws-ecr/build-and-push-image:
-          name: build_push_client
+          name: build_push_server
           requires: 
             - build-and-test-server-and-client
-          repo: swimlane-tracker-client
+          repo: swimlane-tracker-server
           create-repo: true
           dockerfile: Dockerfile
-          path: ./client/
+          path: ./server/
           public-registry: false
           push-image: true
           region: $AWS_REGION
