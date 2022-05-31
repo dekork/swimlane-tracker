@@ -65,6 +65,7 @@ workflows:
           repo: swimlane-tracker-mysql
           create-repo: true
           dockerfile: mysqlDockerFile
+          path: ./
           public-registry: false
           push-image: true
           region: $AWS_REGION
