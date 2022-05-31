@@ -81,4 +81,16 @@ workflows:
           region: $AWS_REGION
           repo-scan-on-push: true
           skip-when-tags-exist: false
-      
+
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
+          family: "swimlane-tracker-server-service"
+          cluster-name: "swimlane-tracker"
+          container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
+          family: "swimlane-tracker-client-service"
+          cluster-name: "swimlane-tracker"
+          container-image-name-updates: "container=swimlane-tracker-client-service,tag=latest"
