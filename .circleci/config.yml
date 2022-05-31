@@ -59,6 +59,7 @@ workflows:
     jobs:
       - build-and-test-server-and-client
       - aws-ecr/build-and-push-image:
+          name: build_push_server
           requires: 
             - build-and-test-server-and-client
           repo: swimlane-tracker-server
@@ -71,6 +72,7 @@ workflows:
           repo-scan-on-push: true
           skip-when-tags-exist: false
       - aws-ecr/build-and-push-image:
+          name: build_push_client
           requires: 
             - build-and-test-server-and-client
           repo: swimlane-tracker-client
@@ -85,13 +87,13 @@ workflows:
 
       - aws-ecs/deploy-service-update:
           requires:
-            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
+            - build_push_server # only run this job once server push to ecr has completed
           family: "swimlane-tracker-server-service"
           cluster-name: "swimlane-tracker"
           container-image-name-updates: "container=swimlane-tracker-server-service,tag=latest"
       - aws-ecs/deploy-service-update:
           requires:
-            - aws-ecr/build-and-push-image # only run this job once aws-ecr/build-and-push-image has completed
+            - build_push_client # only run this job once client push to ecr has completed
           family: "swimlane-tracker-client-service"
           cluster-name: "swimlane-tracker"
           container-image-name-updates: "container=swimlane-tracker-client-service,tag=latest"
