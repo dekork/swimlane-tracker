@@ -57,7 +57,7 @@ jobs:
           command: |
             TAG=0.1.$CIRCLE_BUILD_NUM
             docker-compose config
-            docker-compose build dekork/swimlane-tracker
+            docker-compose build
             docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
             docker-compose push dekork/swimlane-tracker
             docker logout
