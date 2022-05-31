@@ -9,6 +9,7 @@ jobs:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
+      - image: cimg/base
       - image: cimg/node:lts #using 16.15
       - image: cimg/mysql:8.0
         environment:
@@ -57,7 +58,6 @@ jobs:
             docker-compose push
             docker logout
 
-
 # build-client:
 
 # Invoke jobs via workflows
@@ -66,4 +66,4 @@ workflows:
   build-workflow:
     jobs:
       - build-server
-      # build-client
+      
