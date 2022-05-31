@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mysql_db:
+    image: mysql
+    restart: always
+    cap_add:
+      - SYS_NICE
+    volumes:
+      - "./server/config/init.sql:/docker-entrypoint-initdb.d/setup.sql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: swimlane
+      MYSQL_USER: swimlane
+      MYSQL_PASSWORD: passw0rd
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_HOST: localhost
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: "./server"
+    depends_on:
+      - mysql_db
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
