@@ -33,8 +33,8 @@ router.get('/showboat/:id', function (req,res){
 //  Returns: id of added boat
 router.post('/addboat', function(req, res, next)
 {
-    var boat = req.body.boatname;
-    var operator = req.body.operatorname;
+    var boat = req.body.vessel_name;
+    var operator = req.body.operator_name;
     connection.query('INSERT INTO boats (vessel_name, operator_name, swimlane) VALUES (?,?,0)', [boat,operator], function(error, results){
         if (error) {
             res.sendStatus(400);
@@ -77,7 +77,7 @@ router.post('/editboat/:id', function(req, res) {
 //  input: id (via URL)
 router.delete('/deleteboat/:id', function(req,res) {
     var id = req.params.id;
-    connection.query('DELETE FROM boats' +
+    connection.query('DELETE FROM boats ' +
         'WHERE id = ?', [id], function (error, results) {
         if (error) {
             res.sendStatus(400);
