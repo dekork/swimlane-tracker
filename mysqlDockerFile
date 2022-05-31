@@ -1,0 +1,9 @@
+FROM mysql
+
+ENV MYSQL_DATABASE swimlane
+ENV MYSQL_USER swimlane
+ENV MYSQL_PASSWORD passw0rd
+ENV MYSQL_RANDOM_ROOT_PASSWORD yes
+ADD server/config/init.sql /docker-entrypoint-initdb.d
+
+EXPOSE 3306
